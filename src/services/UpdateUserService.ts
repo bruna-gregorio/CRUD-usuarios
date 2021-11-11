@@ -2,6 +2,7 @@ import { getCustomRepository, Repository } from "typeorm"
 
 import { UserRepositories } from "../repositories/UserRepositories"
 import { User } from "../entities/User"
+import { hash } from "bcryptjs"
 
 
 interface IUserUpdate {
@@ -19,12 +20,14 @@ class UpdateUserService {
   }
 
   async execute({ id, name, email, password }: IUserUpdate) {
+    const passwordHash = await hash(password, 10)
+
     const updateUser = await this.userRepositories.update({
       id
     }, {
       name,
       email,
-      password
+      password: passwordHash
     })
 
     return updateUser

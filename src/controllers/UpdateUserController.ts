@@ -12,9 +12,16 @@ class UpdateUserController {
 
     await updateUserService.execute({ id, name, email, password })
 
-    return response.json({
-      "message": "User updated successfully!"
-    })
+    const userUpdate = {
+      message: "User updated successfully!",
+      userUpdated: {
+        name: request.body.name,
+        email: request.body.email,
+        password: request.body.password
+      }
+    }
+
+    return response.json(userUpdate)
   }
 }
 
