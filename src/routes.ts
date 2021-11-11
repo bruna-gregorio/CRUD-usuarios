@@ -5,10 +5,10 @@ import { ensureAuthenticate } from "./middleware/ensureAuthenticate"
 import { AuthenticateUserController } from "./controllers/AuthenticateUserController";
 
 import { CreateUserController } from "./controllers/CreateUserController";
-import { DeleteUserController } from "./controllers/DeleteUserController";
 import { ListUsersController } from "./controllers/ListUsersController";
 import { UpdateNameController } from "./controllers/UpdateNameController";
 import { UpdatePasswordController } from "./controllers/UpdatePasswordController";
+import { DeleteUserController } from "./controllers/DeleteUserController";
 
 const routes = Router()
 
@@ -24,8 +24,8 @@ routes.post("/login", authenticateUserController.handle)
 
 routes.post("/users", createUserController.handle)
 routes.get("/users", listUsersController.handle)
-routes.put("/users/:id", ensureAuthenticate, updateNameController.handle)
-routes.patch("/users/:id", ensureAuthenticate, updatePasswordController.handle)
-routes.delete("/users/:id", deleteUsersController.handle)
+routes.put("/users/name/:id", updateNameController.handle)
+routes.put("/users/password/:id", updatePasswordController.handle)
+routes.delete("/users/:id", ensureAuthenticate, deleteUsersController.handle)
 
 export { routes }
