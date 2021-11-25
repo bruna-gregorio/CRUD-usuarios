@@ -13,6 +13,12 @@ class UpdatePasswordService {
   }
 
   async execute(id: string, password: string) {
+    const idExists = await this.userRepositories.findOne(id)
+
+    if (!idExists) {
+      throw new Error("Sorry, this user does not exists!")
+    }
+
     const passwordHash = await hash(password, 10)
 
     const updateUser = await this.userRepositories.update({

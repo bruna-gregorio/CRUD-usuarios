@@ -12,6 +12,12 @@ class UpdateNameService {
   }
 
   async execute(id: string, name: string) {
+    const idExists = await this.userRepositories.findOne(id)
+
+    if (!idExists) {
+      throw new Error("Sorry, this user does not exists!")
+    }
+
     const updateUser = await this.userRepositories.update({
       id
     }, {

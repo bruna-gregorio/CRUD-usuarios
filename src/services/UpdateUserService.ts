@@ -34,6 +34,12 @@ class UpdateUserService {
   // }
 
   async updateName({ id, name }: IUserUpdate) {
+    const idExists = await this.userRepositories.findOne(id)
+
+    if (!idExists) {
+      throw new Error("Sorry, this user does not exists!")
+    }
+
     const updateName = await this.userRepositories.update({
       id,
     }, {
@@ -44,6 +50,12 @@ class UpdateUserService {
   }
 
   async updateEmail({ id, email }: IUserUpdate) {
+    const idExists = await this.userRepositories.findOne(id)
+
+    if (!idExists) {
+      throw new Error("Sorry, this user does not exists!")
+    }
+
     const updateEmail = await this.userRepositories.update({
       id,
     }, {
@@ -54,6 +66,12 @@ class UpdateUserService {
   }
 
   async updatePassword({ id, password }: IUserUpdate) {
+    const idExists = await this.userRepositories.findOne(id)
+
+    if (!idExists) {
+      throw new Error("Sorry, this user does not exists!")
+    }
+
     const passwordHash = await hash(password, 10)
 
     const updatePassword = await this.userRepositories.update({
