@@ -12,6 +12,12 @@ class DeleteUserService {
   }
 
   async execute(id: string) {
+    const idExists = await this.userRepositories.findOne(id)
+
+    if (!idExists) {
+      throw new Error("This user doesn't exists!")
+    }
+
     const deleteUser = await this.userRepositories.delete({
       id,
     })
