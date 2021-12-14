@@ -32,6 +32,8 @@ class UpdateUserService {
     user.email = email ? email : user.email
     user.password = password ? password = passwordHash : user.password
 
+    await this.userRepositories.save(user)
+
     return user
   }
 }
