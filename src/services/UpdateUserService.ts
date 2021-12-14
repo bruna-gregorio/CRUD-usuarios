@@ -1,15 +1,15 @@
 import { getCustomRepository, Repository } from "typeorm"
+import { hash } from "bcryptjs"
 
 import { UserRepositories } from "../repositories/UserRepositories"
 import { User } from "../entities/User"
-import { hash } from "bcryptjs"
 
 
 interface IUserUpdate {
   id: string;
-  name?: string;
-  email?: string;
-  password?: string;
+  name: string;
+  email: string;
+  password: string;
 }
 
 class UpdateUserService {
@@ -19,68 +19,20 @@ class UpdateUserService {
     this.userRepositories = getCustomRepository(UserRepositories)
   }
 
-  // async execute({ id, name, email, password }: IUserUpdate) {
-  //   const passwordHash = await hash(password, 10)
+  async execute({ id, name, email, password }: IUserUpdate) {
+    const user = await this.userRepositories.findOne(id)
 
-  //   const updateUser = await this.userRepositories.update({
-  //     id
-  //   }, {
-  //     name,
-  //     email,
-  //     password: passwordHash
-  //   })
-
-  //   return updateUser
-  // }
-
-  async updateName({ id, name }: IUserUpdate) {
-    const idExists = await this.userRepositories.findOne(id)
-
-    if (!idExists) {
-      throw new Error("Sorry, this user does not exists!")
-    }
-
-    const updateName = await this.userRepositories.update({
-      id,
-    }, {
-      name
-    })
-
-    return updateName
-  }
-
-  async updateEmail({ id, email }: IUserUpdate) {
-    const idExists = await this.userRepositories.findOne(id)
-
-    if (!idExists) {
-      throw new Error("Sorry, this user does not exists!")
-    }
-
-    const updateEmail = await this.userRepositories.update({
-      id,
-    }, {
-      email
-    })
-
-    return updateEmail
-  }
-
-  async updatePassword({ id, password }: IUserUpdate) {
-    const idExists = await this.userRepositories.findOne(id)
-
-    if (!idExists) {
-      throw new Error("Sorry, this user does not exists!")
+    if (!user) {
+      throw new Error("This user does not exists!")
     }
 
     const passwordHash = await hash(password, 10)
 
-    const updatePassword = await this.userRepositories.update({
-      id,
-    }, {
-      password: passwordHash
-    })
+    user.name = name ? name : user.name
+    user.email = email ? email : user.email
+    user.password = password ? password = passwordHash : user.password
 
-    return updatePassword
+    return user
   }
 }
 

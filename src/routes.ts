@@ -22,9 +22,7 @@ routes.post("/login", authenticateUserController.handle)
 
 routes.post("/users", createUserController.handle)
 routes.get("/users", listUsersController.handle)
-routes.put("/users/name/:id", ensureAuthenticate, updateUserController.updateName)
-routes.put("/users/email/:id", ensureAuthenticate, updateUserController.updateEmail)
-routes.put("/users/password/:id", ensureAuthenticate, updateUserController.updatePassword)
+routes.put("/users/:id", ensureAuthenticate, updateUserController.handle)
 routes.delete("/users/:id", ensureAuthenticate, deleteUsersController.handle)
 
 export { routes }
